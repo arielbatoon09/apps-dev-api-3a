@@ -1,0 +1,1 @@
+routes -> controllers -> services (products/create-product.ts) -> repositories -> response
