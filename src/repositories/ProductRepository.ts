@@ -1,23 +1,39 @@
 import { PrismaClient } from "@prisma/client";
-import { IProduct } from "@/types/product";
+import { ProductData } from "@/types/product";
 
 const prisma = new PrismaClient();
 
 class ProductRepository {
   async findAll() {
-    return prisma.product.findMany({ where: { isActive: true }, orderBy: { name: 'asc' } });
+    return await prisma.product.findMany({ orderBy: { name: 'asc' } });
   }
 
-  async create(data: IProduct) {
-    return prisma.product.create({ data });
+  async findAllActive() {
+    return await prisma.product.findMany({ where: { isActive: true }, orderBy: { name: 'asc' } });
+  }
+
+  async create(data: ProductData) {
+    return await prisma.product.create({ data });
   }
 
   async findById(id: string) {
-    return prisma.product.findFirst({ where: { id } });
+    return await prisma.product.findFirst({ where: { id } });
   }
 
-  async update(id: string, data: Partial<{ name: string, description: string, stock: number, price: number }>) {
-    return prisma.product.update({ where: { id }, data });
+  async update(id: string, data: Partial<ProductData>) {
+    return await prisma.product.update({ where: { id }, data });
+  }
+
+  async delete(id: string) {
+    return await prisma.product.delete({ where: { id }})
+  }
+
+  async softDelete(id: string) {
+    return await prisma.product.update({ where: { id }, data: { isActive: false } });
+  }
+
+  async restore(id: string) {
+    return await prisma.product.update({ where: { id }, data: { isActive: true } });
   }
 }
 

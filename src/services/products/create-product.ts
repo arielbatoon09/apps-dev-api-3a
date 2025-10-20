@@ -1,7 +1,7 @@
 import ProductRepository from "@/repositories/ProductRepository";
-import { IProduct } from "@/types/product";
+import { ProductData } from "@/types/product";
 
-export async function createProductService(data: IProduct) {
+export async function createProductService(data: ProductData) {
   // Validate the fields
   if (!data.name || !data.description || data.price === undefined || data.stock === undefined ) {
     return {
